@@ -12,12 +12,15 @@ Principle of work:
    Or: if can't lock - exit or try to kill the process with PID (retrieved on step 1) when time_limit exceeded, and start from step 1.
 3. Lock for read, to let other processes read the PID.
 The file descriptor holds the lock until the process finished.
-#
+
+
+
 
 RU:
 Запуск демона с pid-файлом на основе блокировки pid-файла.
 + таймаут на исполнение процесса
-# * 100% гарантия что демон не запустится дважды,
+
+* 100% гарантия что демон не запустится дважды,
 * 100% гарантия, что демон запустится, даже если pid в pidfile успел занять другой процесс.
 * и почти 100% гарантия, что мы не убьъём не наш процесс по истечении лимита времени.
 
