@@ -1,32 +1,30 @@
-# EN:
-# Pid-file implementation with file lock (flock system call).
-# + process time limit.
-# 
-# * 100% guarantee that the daemon wont run twice,
-# * 100% guarantee that accidental process won't hold the daemon because of same pid in pidfile.
-# * almost 100% guarantee that there won't be accidental kill of wrong process, when killing by time limit.
-# 
-# Principle of work:
-# 1. Lock for read, to read PID.
-# 2. Lock for write, write PID. Guarantees that other processes are not holding the lockfile.
-#    Or: if can't lock - exit or try to kill the process with PID (retrieved on step 1) when time_limit exceeded, and start from step 1.
-# 3. Lock for read, to let other processes read the PID.
-# The file descriptor holds the lock until the process finished.
+EN:
+Pid-file implementation with file lock (flock system call).
++ process time limit.
+
+* 100% guarantee that the daemon wont run twice,
+* 100% guarantee that accidental process won't hold the daemon because of same pid in pidfile.
+* almost 100% guarantee that there won't be accidental kill of wrong process, when killing by time limit.
+
+Principle of work:
+1. Lock for read, to read PID.
+2. Lock for write, write PID. Guarantees that other processes are not holding the lockfile.
+   Or: if can't lock - exit or try to kill the process with PID (retrieved on step 1) when time_limit exceeded, and start from step 1.
+3. Lock for read, to let other processes read the PID.
+The file descriptor holds the lock until the process finished.
 #
-#
-# 
-# RU:
-# Запуск демона с pid-файлом на основе блокировки pid-файла.
-# + таймаут на исполнение процесса
-#
+
+RU:
+Запуск демона с pid-файлом на основе блокировки pid-файла.
++ таймаут на исполнение процесса
 # * 100% гарантия что демон не запустится дважды,
-# * 100% гарантия, что демон запустится, даже если pid в pidfile успел занять другой процесс.
-# * и почти 100% гарантия, что мы не убьъём не наш процесс по истечении лимита времени.
-# 
-# Принцип работы lock_pidfile:
-# 1. Блокируем на чтение, чтобы сразу прочитать PID.
-# 2. Блокируем на запись, пишем PID. Гарантирует что другие процессы не держат блокировку.
-#    Либо: если не можем залочить - выход, либо убиваем процесс по PID прочитанному в шаге 1, если вышел лимит времени. Затем начинаем с шага 1.
-# 3. Блокируем на чтение, чтобы другие могли прочитать PID.
-# Файловый дескриптор держит блокировку до окончания процесса.
-# 
+* 100% гарантия, что демон запустится, даже если pid в pidfile успел занять другой процесс.
+* и почти 100% гарантия, что мы не убьъём не наш процесс по истечении лимита времени.
+
+Принцип работы lock_pidfile:
+1. Блокируем на чтение, чтобы сразу прочитать PID.
+2. Блокируем на запись, пишем PID. Гарантирует что другие процессы не держат блокировку.
+   Либо: если не можем залочить - выход, либо убиваем процесс по PID прочитанному в шаге 1, если вышел лимит времени. Затем начинаем с шага 1.
+3. Блокируем на чтение, чтобы другие могли прочитать PID.
+Файловый дескриптор держит блокировку до окончания процесса.
+
