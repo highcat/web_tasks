@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+import sys
 from functools import wraps
 from django.conf import settings
 from locked_pidfile import lock_pidfile
@@ -29,6 +30,8 @@ def single(script_name):
                     fn(*args, **kwargs)
                 except Exception:
                     script_log.exception('%s failed' % script_name)
+                    if sys.stdout.isatty():
+                        raise
             else:
                 print "%s is already running" % script_name
         return do
