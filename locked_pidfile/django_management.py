@@ -33,6 +33,6 @@ def single(script_name):
                     if sys.stdout.isatty():
                         raise
             else:
-                print "%s is already running" % script_name
+                print("%s is already running" % script_name)
         return do
     return wrapper

@@ -41,7 +41,7 @@ import time
 
 
 def __lock_pidfile(filename, verbose=True):
-    fd=os.open(filename, os.O_CREAT|os.O_RDWR)
+    fd = os.open(filename, os.O_CREAT|os.O_RDWR)
 
     try:
         pid = 0
@@ -60,10 +60,10 @@ def __lock_pidfile(filename, verbose=True):
         # reLock for write or exit
         fcntl.flock(fd, fcntl.LOCK_EX|fcntl.LOCK_NB)
         # save PID
-        process_id = str(os.getpid())
+        process_id = os.getpid()
         os.ftruncate(fd, 0)
         os.lseek(fd, 0, os.SEEK_SET)        
-        os.write(fd, process_id)
+        os.write(fd, str(process_id).encode('utf-8'))
         os.fsync(fd)
         
         # Re-lock for read to make the PID accessible
@@ -141,7 +141,7 @@ if __name__=='__main__':
 
     pl = PidLink()
     if lock_pidfile(filename, time_limit=10, pid_output=pl, verbose=False):
-        print "acquired", pl.pid
+        print("acquired", pl.pid)
         time.sleep(2000)
-        print "done"
-    print pl.pid
+        print("done")
+    print(pl.pid)
