@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import re
 import sys
 from functools import wraps
@@ -25,7 +26,12 @@ def single(script_name):
         @wraps(fn)
         def do(*args, **kwargs):
             s_name = re.match('^.*\.([^.]+)$', script_name).group(1)
-            if lock_pidfile(settings.DJANGO_ROOT+'../var/run/%s.lock' % s_name, time_limit=10):
+            if hasattr(settings, 'DJANGO_ROOT'):
+                path = os.path.join(settings.DJANGO_ROOT, '../var/run/{}.lock'.format(s_name))
+            else:
+                path = os.path.join(settings.BASE_DIR, 'var/run/{}.lock'.format(s_name))
+            
+            if lock_pidfile(path, time_limit=10):
                 try:
                     fn(*args, **kwargs)
                 except Exception:
