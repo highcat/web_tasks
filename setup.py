@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='locked_pidfile',
-    version='0.2',
+    version='0.3',
     description='locked pid-file, fully synchronized',
     author='Alexander Sychkov',
     author_email='highcatland@gmail.com',
